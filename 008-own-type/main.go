@@ -3,9 +3,12 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/eiannone/keyboard"
 )
 
 var reader *bufio.Reader
@@ -14,6 +17,7 @@ type User struct {
 	UserName        string
 	Age             int
 	FavouriteNumber float64
+	OwnsADog        bool
 }
 
 func main() {
@@ -23,11 +27,13 @@ func main() {
 	user.UserName = readString("What is your name?")
 	user.Age = readInt("How old are you?")
 	user.FavouriteNumber = readFloat("What is your favourite number?")
+	user.OwnsADog = readBool("Do you own a dog?")
 
-	fmt.Printf("Your name is %s and you are %d years old. Your favourite number is %.2f.\n",
+	fmt.Printf("Your name is %s and you are %d years old. Your favourite number is %.2f. Owns a dog %t\n",
 		user.UserName,
 		user.Age,
-		user.FavouriteNumber) //string interpolation
+		user.FavouriteNumber,
+		user.OwnsADog) //string interpolation
 }
 
 func prompt() {
@@ -65,7 +71,6 @@ func readInt(str string) int {
 		} else {
 			return num
 		}
-
 	}
 }
 
@@ -84,6 +89,32 @@ func readFloat(str string) float64 {
 		} else {
 			return num
 		}
-
 	}
+}
+
+func readBool(str string) bool {
+	err := keyboard.Open()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer func() {
+		_ = keyboard.Close()
+	}()
+
+	for {
+		fmt.Println(str)
+		char, _, err := keyboard.GetSingleKey()
+		if err != nil {
+			log.Fatal(err)
+		}
+		if strings.ToLower(string(char)) != "y" && strings.ToLower(string(char)) != "n" {
+			fmt.Println("Please type y or n")
+		} else if char == 'n' || char == 'N' {
+			return false
+		} else if char == 'y' || char == 'Y' {
+			return true
+		}
+	}
+
 }
