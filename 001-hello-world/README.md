@@ -1,4 +1,4 @@
-## # Hello World! 
+## Hello World! 
 
 * **package main** : Every go file must start with the *package name* statement. Packages are used to provide code compartmentalisation and reusability. Here the package name used is main
 
@@ -7,3 +7,6 @@
 * **func main()** : The *main* is a special function. The program execution starts from the main function. The main function should always reside in the main package. The { and } indicate the start and end of the main function.
 
 * **func sayHelloWorld(whatToSay string)** : The sayHelloWorld is a function. It takes an argument with the string type and uses fmt package's Println function to print text to standard output.
+
+### To run the program
+Open the terminal and be sure to be at the folder where main.go file is stored. Type *go run .* or *go run main.go*
